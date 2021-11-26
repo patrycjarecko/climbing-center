@@ -9,18 +9,20 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig(({ command, mode }) => {
     return {
-        publicDir: 'service/public',
+        publicDir: 'icm/public',
         base: command === 'serve'
           ? 'https://localhost:3001/'
           : '/static/',
 
         plugins: [
             vue(),
-            VitePWA(),
+            VitePWA({
+                registerType: 'autoUpdate'
+            }),
             WindiCSS({
                 transformCSS: 'pre',
                 scan: {
-                    include: ['service/**/*.{vue,html,js}'],
+                    include: ['icm/**/*.{vue,html,js}'],
                 }
             }),
             liveReload('./**/*.py'),
@@ -31,11 +33,11 @@ export default defineConfig(({ command, mode }) => {
             manifest: true,
             rollupOptions: {
                 input: [
-                    resolve(__dirname, '/service/assets/main.js'),
+                    resolve(__dirname, '/icm/assets/main.js'),
                 ]
             },
-            outDir:  'service/static',
-            assetsDir:  'service',
+            outDir:  'icm/static',
+            assetsDir:  'icm',
         },
 
         server: {

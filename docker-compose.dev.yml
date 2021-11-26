@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  dev:
+    build:
+      dockerfile: ./docker/development/Dockerfile
+      context: .
+    entrypoint: ./docker/development/entrypoint.sh
+    restart: always
+    tty: true
+    environment:
+      - NODE_ENV=development
+      - DJANGO_ENV=development
+      - VITE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 8000:8000
+      - 3001:3001
