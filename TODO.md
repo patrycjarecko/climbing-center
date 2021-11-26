@@ -1,19 +1,20 @@
+###Backend
 ### Klient:
-- [ ] rejestracja
+- [x] rejestracja
 
 ### Recepcja/administrator:
 - [ ] logowanie
-- [ ] lista klientow
-- [ ] sprzedaz karnetow
+- [x] lista klientow
+- [x] sprzedaz karnetow
 
 ### Administrator:
 - [ ] dodawanie nowych recepcjonistow
 - [ ] dodawanie nowych administratorow
 - [ ] dodawanie instruktorow
-- [ ] dodawanie typow sekcji
-- [ ] dodawanie typow karnetow
-- [ ] dodawanie sekcji
-- [ ] dodawanie bloków godzinowych 
+- [x] dodawanie typow sekcji
+- [x] dodawanie typow karnetow
+- [x] dodawanie sekcji
+- [x] dodawanie bloków godzinowych 
 ### Instruktor
 - [ ] lista przypisanych sekcji
 - [ ] lista klietow na danej sekcji
