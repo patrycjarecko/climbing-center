@@ -15,7 +15,7 @@ DEBUG = env("DJANGO_ENV", default="production") == "development"
 DEV = env("VITE_ENV", default="production") == "development"
 DEV_SERVER_ROOT = env("DEV_SERVER_ROOT", default="http://localhost:3001")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 hosts = env('DJANGO_ALLOWED_HOSTS', default=None)
 if hosts is not None:
     for host in hosts.split(','):
@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'service'
+    'service',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -42,6 +43,17 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100000000,
+}
 
 ROOT_URLCONF = 'climbing_center.urls'
 
