@@ -26,13 +26,15 @@ class InstructorSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        user = Instructor.objects.create(**validated_data)
-        #roles = validated_data.get("role")
 
+        print(validated_data['role'])
+        role = validated_data.pop('role')
+        user = Instructor.objects.create(**validated_data)
+        user.role.set(role)
         user.set_password(validated_data['password'])
         user.save()
 
-        #user.role.set()
+
         return user
 
 class IntervalSerializer(serializers.ModelSerializer):
