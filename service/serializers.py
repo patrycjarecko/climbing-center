@@ -27,7 +27,6 @@ class InstructorSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
 
-        print(validated_data['role'])
         role = validated_data.pop('role')
         user = Instructor.objects.create(**validated_data)
         user.role.set(role)

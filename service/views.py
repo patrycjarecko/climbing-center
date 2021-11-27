@@ -89,6 +89,47 @@ class InstructorListCreateView(generics.ListCreateAPIView):
     serializer_class = InstructorSerializer
     permission_classes = [AllowAny] #isauth
 
+class InstructorDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Instructor.objects.all()
+    serializer_class = InstructorSerializer
+    permission_classes = [AllowAny] #isauth
+
+class LoginAuthTokenView(APIView):
+    permission_classes = []
+
+    def post(self, request):
+        data = {}
+
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            try:
+                token = Token.objects.get(user=user)
+            except Token.DoesNotExist:
+                token = Token.objects.create(user=user)
+
+            data['response'] = 'Successfully authenticated.'
+            data['pk'] = user.pk
+            data['username'] = user.username
+            data['token'] = token.key
+            resp = Response(data, status=status.HTTP_200_OK)
+            resp.set_cookie('token', token.key, httponly=True)
+            return resp
+        else:
+            data['response'] = 'Error'
+            data['error_message'] = 'Invalid username or password. Try again.'
+        return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET"])
+#@permission_classes([IsAuthenticated])
+def LogoutUserView(request):
+    request.user.auth_token.delete()
+    logout(request)
+    return Response('User Logged out successfully')
 
 class IntervalListCreateView(generics.ListCreateAPIView):
     serializer_class = IntervalSerializer
@@ -123,6 +164,8 @@ class SectionTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SectionTypeSerializer
     permission_classes = [AllowAny]  # isauth
     queryset = SectionType.objects.all()
+
+
 
 class PassListCreateView(generics.ListCreateAPIView):
     serializer_class = PassSerializer

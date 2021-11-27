@@ -1,0 +1,23 @@
+[
+{
+    "model": "service.role",
+    "pk": 1,
+    "fields": {
+        "name": "Administrator"
+    }
+},
+{
+    "model": "service.role",
+    "pk": 2,
+    "fields": {
+        "name": "Instruktor"
+    }
+},
+{
+    "model": "service.role",
+    "pk": 3,
+    "fields": {
+        "name": "Recepcjonista"
+    }
+}
+]

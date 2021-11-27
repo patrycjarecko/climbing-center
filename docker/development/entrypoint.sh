@@ -6,7 +6,7 @@ poetry install
 poetry run python manage.py makemigrations
 poetry run python manage.py migrate
 
-FILES=$(find icm/seed -type f)
+FILES=$(find service/seed -type f)
 for file in $FILES; do
   poetry run python manage.py loaddata "$file"
 done
