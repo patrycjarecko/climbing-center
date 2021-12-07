@@ -15,6 +15,7 @@ from django.core import serializers
 from django.db.models import Count
 from django.contrib.auth import authenticate, logout
 from django.utils.crypto import get_random_string
+from django.utils.decorators import method_decorator
 
 from rest_framework.parsers import JSONParser
 from rest_framework import status, viewsets, generics
@@ -27,7 +28,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.filters import SearchFilter, OrderingFilter
 
-
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 
 
@@ -49,6 +51,7 @@ class RegisterClientView(generics.CreateAPIView):
     serializer_class = RegisterClientSerializer
     permission_classes = [AllowAny]
 
+    @swagger_auto_schema(operation_id="lalala")
     def post(self, request):
         data = {}
         serializer = RegisterClientSerializer(data=request.data, partial=True)
@@ -65,15 +68,24 @@ class RegisterClientView(generics.CreateAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@method_decorator(name='get', decorator=swagger_auto_schema(
+    operation_id="xdddddd"
+))
 class ClientListView(generics.ListAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
     permission_classes = [IsReceptionistUser, IsAdministratorUser, IsInstructorUser] #isauth
 
+
+
 class ClientDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ClientSerializer
     permission_classes = [IsReceptionistUser, IsAdministratorUser, IsInstructorUser] #isauth
     queryset = Client.objects.all()
+
+    @swagger_auto_schema(operation_id="lalala")
+    def post(self, *kwargs):
+        super(ClientListView, self).post(*kwargs)
 
 class RoleListCreateView(generics.ListCreateAPIView):
     queryset = Role.objects.all()

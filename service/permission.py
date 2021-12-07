@@ -9,7 +9,9 @@ class IsAdministratorUser(permissions.BasePermission):
         return obj.author == request.user.role'''
 
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.role == 'Administrator'
+        print(request.user)
+        return request.user.is_authenticated #and request.user.role == 'Administrator'
+
 
 
 class IsInstructorUser(permissions.BasePermission):
@@ -20,7 +22,7 @@ class IsInstructorUser(permissions.BasePermission):
         return obj.author == request.user.role'''
 
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.role == 'Instructor'
+        return request.user.is_authenticated #and request.user.role == 'Instructor'
 
 
 class IsReceptionistUser(permissions.BasePermission):
@@ -31,4 +33,4 @@ class IsReceptionistUser(permissions.BasePermission):
         return obj.author == request.user.role'''
 
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.role == 'Receptionist'
+        return request.user.is_authenticated #and request.user.role == 'Receptionist'
