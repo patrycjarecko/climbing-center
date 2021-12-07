@@ -1,5 +1,6 @@
 from service.models import *
 from service.serializers import *
+from service.permission import *
 
 import datetime
 import io
@@ -67,32 +68,32 @@ class RegisterClientView(generics.CreateAPIView):
 class ClientListView(generics.ListAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [AllowAny] #isauth
+    permission_classes = [IsReceptionistUser, IsAdministratorUser, IsInstructorUser] #isauth
 
 class ClientDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ClientSerializer
-    permission_classes = [AllowAny] #isauth
+    permission_classes = [IsReceptionistUser, IsAdministratorUser, IsInstructorUser] #isauth
     queryset = Client.objects.all()
 
 class RoleListCreateView(generics.ListCreateAPIView):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
-    permission_classes = [AllowAny] #isauth
+    permission_classes = [IsAdministratorUser] #isauth
 
 class RoleDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
-    permission_classes = [AllowAny]  # isauth
+    permission_classes = [IsAdministratorUser]  # isauth
 
 class InstructorListCreateView(generics.ListCreateAPIView):
     queryset = Instructor.objects.all()
     serializer_class = InstructorSerializer
-    permission_classes = [AllowAny] #isauth
+    permission_classes = [IsAdministratorUser] #isauth
 
 class InstructorDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Instructor.objects.all()
     serializer_class = InstructorSerializer
-    permission_classes = [AllowAny] #isauth
+    permission_classes = [IsAdministratorUser] #isauth
 
 class LoginAuthTokenView(APIView):
     permission_classes = []
@@ -133,59 +134,63 @@ def LogoutUserView(request):
 
 class IntervalListCreateView(generics.ListCreateAPIView):
     serializer_class = IntervalSerializer
-    permission_classes = [AllowAny]  # isauth
+    permission_classes = [IsAdministratorUser]  # isauth
     queryset = Interval.objects.all()
 
 class IntervalDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = IntervalSerializer
-    permission_classes = [AllowAny]  # isauth
+    permission_classes = [IsAdministratorUser]  # isauth
     queryset = Interval.objects.all()
 
 
 
 class PassTypeListCreateView(generics.ListCreateAPIView):
     serializer_class = PassTypeSerializer
-    permission_classes = [AllowAny]  # isauth
+    permission_classes = [IsAdministratorUser]  # isauth
     queryset = PassType.objects.all()
 
 class PassTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PassTypeSerializer
-    permission_classes = [AllowAny]  # isauth
+    permission_classes = [IsAdministratorUser]  # isauth
     queryset = PassType.objects.all()
 
 
 
 class SectionTypeListCreateView(generics.ListCreateAPIView):
     serializer_class = SectionTypeSerializer
-    permission_classes = [AllowAny]  # isauth
+    permission_classes = [IsAdministratorUser]  # isauth
     queryset = SectionType.objects.all()
 
 class SectionTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SectionTypeSerializer
-    permission_classes = [AllowAny]  # isauth
+    permission_classes = [IsAdministratorUser]  # isauth
     queryset = SectionType.objects.all()
 
 
 
 class PassListCreateView(generics.ListCreateAPIView):
     serializer_class = PassSerializer
-    permission_classes = [AllowAny]  # isauth
+    permission_classes = [IsAdministratorUser, IsReceptionistUser]  # isauth
     queryset = Pass.objects.all()
 
 class PassDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PassSerializer
-    permission_classes = [AllowAny]  # isauth
+    permission_classes = [IsAdministratorUser, IsReceptionistUser]  # isauth
     queryset = Pass.objects.all()
 
 
 
 class SectionListCreateView(generics.ListCreateAPIView):
     serializer_class = SectionSerializer
-    permission_classes = [AllowAny]  # isauth
+    permission_classes = [IsReceptionistUser, IsAdministratorUser, IsInstructorUser]  # isauth
     queryset = Section.objects.all()
+
+    #tworzenie tylko dla admina
 
 class SectionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SectionSerializer
-    permission_classes = [AllowAny]  # isauth
+    permission_classes = [IsReceptionistUser, IsAdministratorUser, IsInstructorUser]  # isauth
     queryset = Section.objects.all()
+
+    #retrieve dla wszystkich reszta dla admina
 
