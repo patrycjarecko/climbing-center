@@ -10,14 +10,14 @@
     "model": "service.role",
     "pk": 2,
     "fields": {
-        "name": "Instruktor"
+        "name": "Instructor"
     }
 },
 {
     "model": "service.role",
     "pk": 3,
     "fields": {
-        "name": "Recepcjonista"
+        "name": "Receptionist"
     }
 }
 ]
