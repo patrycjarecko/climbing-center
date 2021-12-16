@@ -23,12 +23,16 @@ import Vue3Sanitize from 'vue-3-sanitize'
 
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
-import ApolloClient from 'apollo-boost'
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client/core'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 
 // GraphQL
 const apolloClient = new ApolloClient({
-  uri: `${location.origin}/graphql`
+  link: new HttpLink({
+    uri: `${location.origin}/graphql`
+  }),
+  cache: new InMemoryCache(),
+  connectToDevTools: true
 })
 
 

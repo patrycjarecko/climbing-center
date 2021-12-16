@@ -21,19 +21,35 @@
           <icon-users class="mr-2" />
           Clients
         </router-link>
-        <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+        <router-link :to="{ name: 'Users' }" class="p-4 block flex items-center hover:text-[#fa0d]">
           <icon-users class="mr-2" />
-          Clients
+          Users
+        </router-link>
+        <router-link :to="{ name: 'Sections' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+          <icon-list class="mr-2" />
+          Sections
         </router-link>
         <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
           <icon-users class="mr-2" />
-          Clients
+          Passes
+        </router-link>
+        <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+          <icon-users class="mr-2" />
+          Intervals
+        </router-link>
+        <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+          <icon-users class="mr-2" />
+          Section Types
+        </router-link>
+        <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+          <icon-users class="mr-2" />
+          Pass Types
         </router-link>
       </div>
     </div>
 
     <div class="h-full grid grid-rows-[auto,1fr]">
-      <nav v-if="!route.meta.hideMenu" class="sticky shadow-md">
+      <nav v-if="!route.meta.hideMenu" class="sticky shadow-md bg-white">
         <div class="container px-8 mx-auto flex items-center">
           <div>{{ route.name }}</div>
           <div class="m-auto"></div>
@@ -72,6 +88,7 @@
 import IconUserAdd from '~icons/mdi/user-add'
 import IconUsers from '~icons/mdi/users'
 import IconStats from '~icons/mdi/chart-areaspline'
+import IconList from '~icons/mdi/view-list'
 import Error from './pages/Error.vue'
 import { useRoute } from 'vue-router'
 const error = '__DJANGO_ERROR__' in window
