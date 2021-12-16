@@ -6,6 +6,7 @@ from rest_framework import routers
 from . import views
 from climbing_center import settings
 from climbing_center.settings import DEV
+from django.views.decorators.csrf import csrf_exempt
 
 from graphene_django.views import GraphQLView
 from service.schema import schema
@@ -16,9 +17,7 @@ urlpatterns = [
     path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
     path('api/login', views.LoginAuthTokenView.as_view(), name='user_login'),
     path('api/logout', views.LogoutUserView, name='user_logout'),
-
-path("graphql", GraphQLView.as_view(graphiql=True, schema=schema)),
-
+    path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
 ]
 
 #urlpatterns = format_suffix_patterns(urlpatterns)
