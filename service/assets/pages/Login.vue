@@ -6,27 +6,25 @@
     </div>
     <div class="bg-white rounded-lg shadow-xl p-6 min-w-2xl">
       <div class="text-2xl">
-        Register
+        Login
       </div>
       <div class="text-sm text-gray-700 pb-8">
         Fill out the form.
       </div>
 
       <div class="grid grid-cols-2 gap-4 px-8">
-        <it-input v-model="firstname" placeholder="First name" />
-        <it-input v-model="lastname" placeholder="Last name" />
         <it-input v-model="email" placeholder="Email" />
-        <it-input v-model="date" placeholder="Birthday date" />
+        <it-input v-model="password" placeholder="Password" />
       </div>
 
       <div class="pt-8 px-8">
         <div>
           <div class="pb-4">
-            <it-checkbox>I accept the Terms of Services</it-checkbox>
+            <it-checkbox>Remember me</it-checkbox>
           </div>
 
           <div >
-            <it-button>Register</it-button>
+            <it-button>Login</it-button>
           </div>
         </div>
       </div>
@@ -38,10 +36,8 @@
 
 import { ref } from 'vue'
 
-const firstname = ref('')
-const lastname = ref('')
 const email = ref('')
-const date = ref('')
+const password = ref('')
 </script>
 
 
