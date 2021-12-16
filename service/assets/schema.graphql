@@ -2,6 +2,7 @@
 
 schema {
     query: Query
+    mutation: Mutation
 }
 
 type ClientType {
@@ -11,6 +12,10 @@ type ClientType {
     firstName: String!
     lastName: String!
     passSet: [PassType!]!
+}
+
+type CreateClient {
+    client: ClientType
 }
 
 type EntranceType {
@@ -25,6 +30,7 @@ type InstructorType {
     lastLogin: DateTime
     lastName: String!
     password: String!
+    role: [RoleType!]!
     sectionSet: [SectionType!]!
     username: String!
 }
@@ -34,6 +40,10 @@ type IntervalType {
     id: ID!
     sectionSet: [SectionType!]!
     startTime: Time!
+}
+
+type Mutation {
+    createClient(input: ClientInput!): CreateClient
 }
 
 type PassType {
@@ -63,6 +73,12 @@ type Query {
     passes: [PassType]
     sectionTypes: [SectionTypeType]
     sections: [SectionType]
+}
+
+type RoleType {
+    id: ID!
+    instructorSet: [InstructorType!]!
+    name: String!
 }
 
 type SectionType {
@@ -106,3 +122,10 @@ specified by
 [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 """
 scalar Time
+
+input ClientInput {
+    birthday: Date
+    email: String
+    firstName: String
+    lastName: String
+}
