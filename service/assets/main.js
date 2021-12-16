@@ -4,6 +4,9 @@ import 'virtual:windi-devtools'
 import App from './App.vue'
 import { createApp, h, provide } from 'vue'
 
+import Equal from 'equal-vue'
+import 'equal-vue/dist/style.css'
+
 import router from './router'
 
 import axios from 'axios'
@@ -41,6 +44,8 @@ const app = createApp({
   render: _ => h(App)
 })
 
+app.use(Equal)
+
 // v-tooltip
 app.use(VTooltipPlugin)
 
@@ -69,4 +74,3 @@ app.mount('#app')
 const updateServiceWorker = useRegisterSW({
   onOfflineReady () {},
 })
-

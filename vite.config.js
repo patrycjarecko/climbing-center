@@ -22,7 +22,7 @@ export default defineConfig(({ command, mode }) => {
             WindiCSS({
                 transformCSS: 'pre',
                 scan: {
-                    include: ['icm/**/*.{vue,html,js}'],
+                    include: ['service/**/*.{vue,html,js}'],
                 }
             }),
             liveReload('./**/*.py'),
@@ -33,10 +33,10 @@ export default defineConfig(({ command, mode }) => {
             manifest: true,
             rollupOptions: {
                 input: [
-                    resolve(__dirname, '/icm/assets/main.js'),
+                    resolve(__dirname, '/service/assets/main.js'),
                 ]
             },
-            outDir:  'icm/static',
+            outDir:  'service/static',
             assetsDir:  'icm',
         },
 
