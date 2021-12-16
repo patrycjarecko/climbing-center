@@ -2,7 +2,7 @@ import 'virtual:windi.css'
 import 'virtual:windi-devtools'
 
 import App from './App.vue'
-import { createApp, h } from 'vue'
+import { createApp, h, provide } from 'vue'
 
 import router from './router'
 
@@ -20,12 +20,23 @@ import Vue3Sanitize from 'vue-3-sanitize'
 
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
+import ApolloClient from 'apollo-boost'
+import { DefaultApolloClient } from '@vue/apollo-composable'
+
+// GraphQL
+const apolloClient = new ApolloClient({
+  uri: `${location.origin}/graphql`
+})
+
+
 const app = createApp({
   setup: _ => {
     provideToast({
       timeout: 3000,
       position: POSITION.BOTTOM_RIGHT
     })
+
+    provide(DefaultApolloClient, apolloClient)
   },
   render: _ => h(App)
 })

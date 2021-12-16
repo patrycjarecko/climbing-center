@@ -1,0 +1,108 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+}
+
+type ClientType {
+    birthday: Date!
+    cardNumber: String!
+    email: String!
+    firstName: String!
+    lastName: String!
+    passSet: [PassType!]!
+}
+
+type EntranceType {
+    date: Date!
+    id: ID!
+    passModel: PassType!
+}
+
+type InstructorType {
+    firstName: String!
+    id: ID!
+    lastLogin: DateTime
+    lastName: String!
+    password: String!
+    sectionSet: [SectionType!]!
+    username: String!
+}
+
+type IntervalType {
+    endTime: Time!
+    id: ID!
+    sectionSet: [SectionType!]!
+    startTime: Time!
+}
+
+type PassType {
+    client: ClientType!
+    entranceSet: [EntranceType!]!
+    id: ID!
+    month: Date!
+    passType: PassTypeType
+    section: SectionType
+}
+
+type PassTypeType {
+    expirationDate: Int!
+    id: ID!
+    maxEntryCount: Int!
+    name: String!
+    passSet: [PassType!]!
+    price: Int!
+}
+
+type Query {
+    clients: [ClientType]
+    entrances: [EntranceType]
+    instructors: [InstructorType]
+    intervals: [IntervalType]
+    passTypes: [PassTypeType]
+    passes: [PassType]
+    sectionTypes: [SectionTypeType]
+    sections: [SectionType]
+}
+
+type SectionType {
+    id: ID!
+    instructor: InstructorType!
+    interval: IntervalType!
+    passSet: [PassType!]!
+    sectionType: SectionTypeType!
+    weekDay: Int!
+}
+
+type SectionTypeType {
+    id: ID!
+    maxCount: Int!
+    name: String!
+    price: Int!
+    priceOnceAWeek: Int!
+    sectionSet: [SectionType!]!
+}
+
+"""
+
+The `Date` scalar type represents a Date
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar Date
+
+"""
+
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+"""
+
+The `Time` scalar type represents a Time value as
+specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar Time
