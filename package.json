@@ -46,6 +46,7 @@
     "equal-vue": "^0.79.3",
     "fuse.js": "^6.4.6",
     "graphql": "^16.1.0",
+    "graphql-tag": "^2.12.6",
     "jwt-decode": "^3.1.2",
     "reconnecting-websocket": "^4.4.0",
     "svgmoji": "^3.2.0",

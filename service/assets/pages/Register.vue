@@ -5,11 +5,18 @@
       <div class="bg-gray-600 opacity-50 absolute inset-0"></div>
     </div>
     <div class="bg-white rounded-lg shadow-xl p-6 min-w-2xl">
-      <div class="text-2xl">
-        Register
-      </div>
-      <div class="text-sm text-gray-700 pb-8">
-        Fill out the form.
+      <div class="flex pb-8">
+        <div class="w-8 flex items-center text-gray-400">
+          <icon-user class="w-6 h-6" />
+        </div>
+        <div>
+          <div class="text-2xl">
+            Register client
+          </div>
+          <div class="text-sm text-gray-700">
+            Fill out the form.
+          </div>
+        </div>
       </div>
 
       <div class="grid grid-cols-2 gap-4 px-8">
@@ -35,7 +42,7 @@
 </template>
 
 <script setup>
-
+import IconUser from '~icons/mdi/user'
 import { ref } from 'vue'
 
 const firstname = ref('')
