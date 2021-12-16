@@ -1,6 +1,13 @@
 import graphene
 from graphene_django import DjangoObjectType
+from django.utils.crypto import get_random_string
 from .models import *
+
+
+class RoleType(DjangoObjectType):
+    class Meta:
+        model = Role
+        fields = '__all__'
 
 class ClientType(DjangoObjectType):
     class Meta:
@@ -79,7 +86,7 @@ class Query(graphene.ObjectType):
         return Entrance.objects.all()
 
 
-'''
+
 class RoleInput(graphene.InputObjectType):
     name = graphene.String()
 
@@ -87,8 +94,8 @@ class RoleInput(graphene.InputObjectType):
 class ClientInput(graphene.InputObjectType):
     first_name = graphene.String()
     last_name = graphene.String()
-    birthday = graphene.
-    email = models.EmailField()
+    birthday = graphene.Date()
+    email = graphene.String()
 
 
 class InstructorInput(graphene.InputObjectType):
@@ -96,13 +103,11 @@ class InstructorInput(graphene.InputObjectType):
     last_name = graphene.String()
     password = graphene.String()
     username = graphene.String()
-    role = models.ManyToManyField(Role)
+    role = graphene.Field(RoleType)
 
 class IntervalInput(graphene.InputObjectType):
-    start_time = models.TimeField()
-    end_time = models.TimeField()
-
-
+    start_time = graphene.Time()
+    end_time = graphene.Time()
 
 class SectionTypeInput(graphene.InputObjectType):
     name = graphene.String()
@@ -113,11 +118,9 @@ class SectionTypeInput(graphene.InputObjectType):
 
 class SectionInput(graphene.InputObjectType):
     week_day = graphene.Int()
-    interval = models.ForeignKey(Interval, on_delete=models.CASCADE)
-    section_type = models.ForeignKey(SectionType, on_delete=models.CASCADE)
-    instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
-
-
+    interval = graphene.Field(IntervalType)
+    section_type = graphene.Field(SectionTypeType)
+    instructor = graphene.Field(InstructorType)
 
 class PassTypeInput(graphene.InputObjectType):
     name = graphene.String()
@@ -125,21 +128,43 @@ class PassTypeInput(graphene.InputObjectType):
     max_entry_count = graphene.Int()
     expiration_date = graphene.Int()
 
-
-
 class PassInput(graphene.InputObjectType):
-    month = models.DateField()
-    section = models.ForeignKey(Section, on_delete=models.CASCADE, blank=True, null=True)
-    pass_type = models.ForeignKey(PassType, on_delete=models.CASCADE, blank=True, null=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    month = graphene.Date()
+    section = graphene.Field(SectionType)
+    pass_type = graphene.Field(PassTypeType)
+    client = graphene.Field(ClientType)
 
 
 class EntranceInput(graphene.InputObjectType):
-    date = models.DateField()
-    pass_model = models.ForeignKey(Pass, on_delete=models.CASCADE)'''
+    date = graphene.Date()
+    pass_model = graphene.Field(PassType)
+
+def generate_card_number():
+    number = get_random_string(length=6, allowed_chars='1234567890')
+    if Client.objects.filter(card_number=number).count() >0:
+        generate_card_number()
+    else:
+        return number
+
+class CreateClient(graphene.Mutation):
+    class Arguments:
+        input = ClientInput(required=True)
+
+    client = graphene.Field(ClientType)
+
+    @classmethod
+    def mutate(cls, root, info, input):
+        client = Client()
+        client.card_number = generate_card_number()
+        client.first_name = input.first_name
+        client.last_name = input.last_name
+        client.email = input.email
+        client.birthday = input.birthday
+        client.save()
+        return CreateClient(client=client)
 
 
+class Mutation(graphene.ObjectType):
+    create_client = CreateClient.Field()
 
-
-
-schema = graphene.Schema(query=Query)
+schema = graphene.Schema(query=Query, mutation=Mutation)
