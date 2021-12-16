@@ -1,10 +1,10 @@
 <template>
   <div class="flex items-center justify-center h-full">
-    <div class="absolute inset-0 -z-1 overflow-hidden">
-      <img class="w-full" src="https://images.unsplash.com/photo-1571649123442-dc0e1965e037?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80">
+    <div class="absolute inset-0 overflow-hidden">
+      <img class="w-full" src="https://images.unsplash.com/photo-1564769662533-4f00a87b4056?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1244&q=80">
       <div class="bg-gray-600 opacity-50 absolute inset-0"></div>
     </div>
-    <div class="bg-white rounded-lg shadow-xl p-6 min-w-2xl">
+    <div class="bg-white rounded-lg shadow-xl p-6 min-w-2xl relative z-1">
       <div class="text-2xl">
         Login
       </div>

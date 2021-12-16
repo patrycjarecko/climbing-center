@@ -30,19 +30,19 @@
           Sections
         </router-link>
         <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
-          <icon-users class="mr-2" />
+          <icon-list-2 class="mr-2" />
           Passes
         </router-link>
         <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
-          <icon-users class="mr-2" />
+          <icon-clock class="mr-2" />
           Intervals
         </router-link>
         <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
-          <icon-users class="mr-2" />
+          <icon-wunderlist class="mr-2" />
           Section Types
         </router-link>
         <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
-          <icon-users class="mr-2" />
+          <icon-passport class="mr-2" />
           Pass Types
         </router-link>
       </div>
@@ -89,6 +89,10 @@ import IconUserAdd from '~icons/mdi/user-add'
 import IconUsers from '~icons/mdi/users'
 import IconStats from '~icons/mdi/chart-areaspline'
 import IconList from '~icons/mdi/view-list'
+import IconList2 from '~icons/mdi/view-list-outline'
+import IconWunderlist from '~icons/mdi/wunderlist'
+import IconClock from '~icons/mdi/clock-time-eight'
+import IconPassport from '~icons/mdi/passport'
 import Error from './pages/Error.vue'
 import { useRoute } from 'vue-router'
 const error = '__DJANGO_ERROR__' in window

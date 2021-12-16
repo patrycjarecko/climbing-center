@@ -56,5 +56,5 @@ const { result } = useQuery(gql`
     }
 `)
 
-const clients = computed(() => result.value?.instructors ?? [])
+const clients = computed(() => result.value?.clients ?? [])
 </script>
