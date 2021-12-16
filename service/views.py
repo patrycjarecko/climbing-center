@@ -80,12 +80,13 @@ class ClientListView(generics.ListAPIView):
 
 class ClientDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ClientSerializer
-    permission_classes = [IsReceptionistUser, IsAdministratorUser, IsInstructorUser] #isauth
+    permission_classes = [AllowAny] #isauth
     queryset = Client.objects.all()
 
-    @swagger_auto_schema(operation_id="lalala")
-    def post(self, *kwargs):
-        super(ClientListView, self).post(*kwargs)
+    @swagger_auto_schema(operation_id="1234")
+    def put(self, *args, **kwargs):
+        return super(ClientDetailView, self).put(*args, **kwargs)
+
 
 class RoleListCreateView(generics.ListCreateAPIView):
     queryset = Role.objects.all()
@@ -144,65 +145,4 @@ def LogoutUserView(request):
     logout(request)
     return Response('User Logged out successfully')
 
-class IntervalListCreateView(generics.ListCreateAPIView):
-    serializer_class = IntervalSerializer
-    permission_classes = [IsAdministratorUser]  # isauth
-    queryset = Interval.objects.all()
-
-class IntervalDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = IntervalSerializer
-    permission_classes = [IsAdministratorUser]  # isauth
-    queryset = Interval.objects.all()
-
-
-
-class PassTypeListCreateView(generics.ListCreateAPIView):
-    serializer_class = PassTypeSerializer
-    permission_classes = [IsAdministratorUser]  # isauth
-    queryset = PassType.objects.all()
-
-class PassTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = PassTypeSerializer
-    permission_classes = [IsAdministratorUser]  # isauth
-    queryset = PassType.objects.all()
-
-
-
-class SectionTypeListCreateView(generics.ListCreateAPIView):
-    serializer_class = SectionTypeSerializer
-    permission_classes = [IsAdministratorUser]  # isauth
-    queryset = SectionType.objects.all()
-
-class SectionTypeDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = SectionTypeSerializer
-    permission_classes = [IsAdministratorUser]  # isauth
-    queryset = SectionType.objects.all()
-
-
-
-class PassListCreateView(generics.ListCreateAPIView):
-    serializer_class = PassSerializer
-    permission_classes = [IsAdministratorUser, IsReceptionistUser]  # isauth
-    queryset = Pass.objects.all()
-
-class PassDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = PassSerializer
-    permission_classes = [IsAdministratorUser, IsReceptionistUser]  # isauth
-    queryset = Pass.objects.all()
-
-
-
-class SectionListCreateView(generics.ListCreateAPIView):
-    serializer_class = SectionSerializer
-    permission_classes = [IsReceptionistUser, IsAdministratorUser, IsInstructorUser]  # isauth
-    queryset = Section.objects.all()
-
-    #tworzenie tylko dla admina
-
-class SectionDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = SectionSerializer
-    permission_classes = [IsReceptionistUser, IsAdministratorUser, IsInstructorUser]  # isauth
-    queryset = Section.objects.all()
-
-    #retrieve dla wszystkich reszta dla admina
 
