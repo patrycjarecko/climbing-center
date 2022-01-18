@@ -48,12 +48,12 @@ class Instructor (AbstractBaseUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     password = models.CharField(max_length=15)
-    username = models.CharField(max_length=15, unique=True)
+    username = models.EmailField(unique=True)
     role = models.ManyToManyField(Role)
     objects = InstructorManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'email', 'role']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'role']
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -111,4 +111,3 @@ class Entrance(models.Model):
 
     def __str__(self):
         return f"{self.date} - {self.pass_model}"
-
