@@ -61,6 +61,8 @@ class Query(graphene.ObjectType):
     passes = graphene.List(PassModelType)
     entrances = graphene.List(EntranceType)
 
+    instructor = graphene.Field(InstructorType, token=graphene.String(required=True))
+
     def resolve_clients(root, info, **kwargs):
         return Client.objects.all()
 
@@ -84,6 +86,10 @@ class Query(graphene.ObjectType):
 
     def resolve_entrances(root, info, **kwargs):
         return Entrance.objects.all()
+
+    def resolve_instructor(root, info, token=None):
+        return Instructor.objects.filter(auth_token=token).first() if token is not None else None
+
 
 
 
