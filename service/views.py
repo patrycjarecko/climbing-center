@@ -116,10 +116,8 @@ class LoginAuthTokenView(APIView):
 
         username = request.data.get('username')
         password = request.data.get('password')
-
-        user = authenticate(username=username, password=password)
-
-        if user:
+        user = Instructor.objects.filter(username=username, password=password).first()
+        if user is not None:
             try:
                 token = Token.objects.get(user=user)
             except Token.DoesNotExist:
