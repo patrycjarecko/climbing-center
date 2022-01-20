@@ -50,13 +50,31 @@
 
     <div class="h-full grid grid-rows-[auto,1fr]">
       <nav v-if="!route.meta.hideMenu" class="sticky shadow-md bg-white">
-        <div class="container px-8 mx-auto flex items-center">
+        <div class="container px-8 mx-auto flex items-center py-4">
           <div>{{ route.name }}</div>
           <div class="m-auto"></div>
-          <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center">
-            <icon-user-add class="mr-2" />
-            Add a client
+          <router-link :to="{ name: 'Register' }">
+            <it-button>
+              <icon-user-add class="mr-2" />
+              Add a client
+            </it-button>
           </router-link>
+
+          <div class="ml-4">
+            <it-dropdown>
+              <it-button>
+                {{ me?.firstName }}
+                {{ me?.lastName }}
+              </it-button>
+
+              <template #menu>
+                <it-dropdown-menu>
+<!--                  <it-dropdown-item>Hello</it-dropdown-item>-->
+                  <it-dropdown-item @click="userStore.logout" icon="logout" divided>Logout</it-dropdown-item>
+                </it-dropdown-menu>
+              </template>
+            </it-dropdown>
+          </div>
         </div>
       </nav>
       <div v-else></div>
@@ -95,8 +113,14 @@ import IconClock from '~icons/mdi/clock-time-eight'
 import IconPassport from '~icons/mdi/passport'
 import Error from './pages/Error.vue'
 import { useRoute } from 'vue-router'
+import { useUserStore } from './store'
+import { storeToRefs } from 'pinia'
 const error = '__DJANGO_ERROR__' in window
 const route = useRoute()
+
+const userStore = useUserStore()
+const { me } = storeToRefs(userStore)
+
 </script>
 
 <style>

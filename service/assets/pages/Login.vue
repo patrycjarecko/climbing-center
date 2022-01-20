@@ -20,11 +20,11 @@
       <div class="pt-8 px-8">
         <div>
           <div class="pb-4">
-            <it-checkbox>Remember me</it-checkbox>
+            <it-checkbox v-model="remember">Remember me</it-checkbox>
           </div>
 
           <div >
-            <it-button>Login</it-button>
+            <it-button @click="login" :loading="loading">Login</it-button>
           </div>
         </div>
       </div>
@@ -35,9 +35,28 @@
 <script setup>
 
 import { ref } from 'vue'
+import { useUserStore } from '../store'
+import { useRouter } from 'vue-router'
+
+const userStore = useUserStore()
+const router = useRouter()
 
 const email = ref('')
 const password = ref('')
+const remember = ref(false)
+const loading = ref(false)
+
+const login = async () => {
+  loading.value = true
+  const error = await userStore.login(email.value, password.value)
+  loading.value = false
+
+  if (!error) {
+    return router.push({ name: 'Dashboard' })
+  }
+
+}
+
 </script>
 
 

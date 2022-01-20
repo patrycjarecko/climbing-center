@@ -19,22 +19,15 @@ import 'v-tooltip/dist/v-tooltip.css'
 
 import { vfmPlugin } from 'vue-final-modal'
 
-import Vue3Sanitize from 'vue-3-sanitize'
-
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client/core'
 import { DefaultApolloClient } from '@vue/apollo-composable'
+import { apolloClient } from './apollo'
+
+import { createPinia } from 'pinia'
+import piniaPersist from 'pinia-plugin-persist'
 
 // GraphQL
-const apolloClient = new ApolloClient({
-  link: new HttpLink({
-    uri: `${location.origin}/graphql`
-  }),
-  cache: new InMemoryCache(),
-  connectToDevTools: true
-})
-
 
 const app = createApp({
   setup: _ => {
@@ -48,6 +41,12 @@ const app = createApp({
   render: _ => h(App)
 })
 
+// Pinia
+const pinia = createPinia()
+pinia.use(piniaPersist)
+app.use(pinia)
+
+// Equal
 app.use(Equal)
 
 // v-tooltip
@@ -55,11 +54,6 @@ app.use(VTooltipPlugin)
 
 // Vue Final Modal
 app.use(vfmPlugin)
-
-// Vue 3 Sanitize
-app.use(Vue3Sanitize, {
-  allowedTags: ['p', 'li', 'ul', 'ol', 'br', 'b', 'i', 'em', 'strong', 'a']
-})
 
 // Devtools
 if (process.env.NODE_ENV !== 'production' && '__VUE_DEVTOOLS_GLOBAL_HOOK__' in window) {
