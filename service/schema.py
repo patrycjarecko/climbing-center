@@ -187,7 +187,7 @@ class UpdateClient(graphene.Mutation):
 
 class DeleteClient(graphene.Mutation):
     class Arguments:
-        id = graphene.ID()
+        id = graphene.String()
 
     client = graphene.Field(ClientType)
 
@@ -239,7 +239,7 @@ class UpdateInstructor(graphene.Mutation):
 
 class DeleteInstructor(graphene.Mutation):
     class Arguments:
-        id = graphene.String()
+        id = graphene.ID()
 
     instructor = graphene.Field(InstructorType)
 
