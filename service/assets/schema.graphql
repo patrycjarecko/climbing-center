@@ -11,17 +11,85 @@ type ClientType {
     email: String!
     firstName: String!
     lastName: String!
-    passSet: [PassType!]!
+    passSet: [PassModelType!]!
 }
 
 type CreateClient {
     client: ClientType
 }
 
+type CreateEntrance {
+    entrance: EntranceType
+}
+
+type CreateInstructor {
+    instructor: InstructorType
+}
+
+type CreateInterval {
+    interval: IntervalType
+}
+
+type CreatePass {
+    passModel: PassModelType
+}
+
+type CreatePassType {
+    passType: PassTypeType
+}
+
+type CreateRole {
+    role: RoleType
+}
+
+type CreateSection {
+    section: SectionModelType
+}
+
+type CreateSectionType {
+    sectionType: SectionTypeType
+}
+
+type DeleteClient {
+    client: ClientType
+}
+
+type DeleteEntrance {
+    entrance: EntranceType
+}
+
+type DeleteInstructor {
+    instructor: InstructorType
+}
+
+type DeleteInterval {
+    interval: IntervalType
+}
+
+type DeletePass {
+    passModel: PassModelType
+}
+
+type DeletePassType {
+    passType: PassTypeType
+}
+
+type DeleteRole {
+    role: RoleType
+}
+
+type DeleteSection {
+    section: SectionModelType
+}
+
+type DeleteSectionType {
+    sectionType: SectionTypeType
+}
+
 type EntranceType {
     date: Date!
     id: ID!
-    passModel: PassType!
+    passModel: PassModelType!
 }
 
 type InstructorType {
@@ -31,28 +99,54 @@ type InstructorType {
     lastName: String!
     password: String!
     role: [RoleType!]!
-    sectionSet: [SectionType!]!
+    sectionSet: [SectionModelType!]!
     username: String!
 }
 
 type IntervalType {
     endTime: Time!
     id: ID!
-    sectionSet: [SectionType!]!
+    sectionSet: [SectionModelType!]!
     startTime: Time!
 }
 
 type Mutation {
     createClient(input: ClientInput!): CreateClient
+    createEntrance(input: EntranceInput!): CreateEntrance
+    createInstructor(input: InstructorInput!): CreateInstructor
+    createInterval(input: IntervalInput!): CreateInterval
+    createPass(input: PassInput!): CreatePass
+    createPasstype(input: PassTypeInput!): CreatePassType
+    createRole(input: RoleInput!): CreateRole
+    createSection(input: SectionInput!): CreateSection
+    createSectiontype(input: SectionTypeInput!): CreateSectionType
+    deleteClient(id: String): DeleteClient
+    deleteEntrance(id: ID): DeleteEntrance
+    deleteInstructor(id: ID): DeleteInstructor
+    deleteInterval(id: ID): DeleteInterval
+    deletePass(id: ID): DeletePass
+    deletePasstype(id: ID): DeletePassType
+    deleteRole(id: ID): DeleteRole
+    deleteSection(id: ID): DeleteSection
+    deleteSectiontype(id: ID): DeleteSectionType
+    updateClient(id: String, input: ClientInput!): UpdateClient
+    updateEntrance(id: ID, input: EntranceInput!): UpdateEntrance
+    updateInstructor(id: ID, input: InstructorInput!): UpdateInstructor
+    updateInterval(id: ID, input: IntervalInput!): UpdateInterval
+    updatePass(id: ID, input: PassInput!): UpdatePass
+    updatePasstype(id: ID, input: PassTypeInput!): UpdatePassType
+    updateRole(id: ID, input: RoleInput!): UpdateRole
+    updateSection(id: ID, input: SectionInput!): UpdateSection
+    updateSectiontype(id: ID, input: SectionTypeInput!): UpdateSectionType
 }
 
-type PassType {
+type PassModelType {
     client: ClientType!
     entranceSet: [EntranceType!]!
     id: ID!
     month: Date!
     passType: PassTypeType
-    section: SectionType
+    section: SectionModelType
 }
 
 type PassTypeType {
@@ -60,19 +154,20 @@ type PassTypeType {
     id: ID!
     maxEntryCount: Int!
     name: String!
-    passSet: [PassType!]!
+    passSet: [PassModelType!]!
     price: Int!
 }
 
 type Query {
     clients: [ClientType]
     entrances: [EntranceType]
+    instructor(token: String!): InstructorType
     instructors: [InstructorType]
     intervals: [IntervalType]
     passTypes: [PassTypeType]
-    passes: [PassType]
+    passes: [PassModelType]
     sectionTypes: [SectionTypeType]
-    sections: [SectionType]
+    sections: [SectionModelType]
 }
 
 type RoleType {
@@ -81,11 +176,11 @@ type RoleType {
     name: String!
 }
 
-type SectionType {
+type SectionModelType {
     id: ID!
     instructor: InstructorType!
     interval: IntervalType!
-    passSet: [PassType!]!
+    passSet: [PassModelType!]!
     sectionType: SectionTypeType!
     weekDay: Int!
 }
@@ -96,7 +191,43 @@ type SectionTypeType {
     name: String!
     price: Int!
     priceOnceAWeek: Int!
-    sectionSet: [SectionType!]!
+    sectionSet: [SectionModelType!]!
+}
+
+type UpdateClient {
+    client: ClientType
+}
+
+type UpdateEntrance {
+    entrance: EntranceType
+}
+
+type UpdateInstructor {
+    instructor: InstructorType
+}
+
+type UpdateInterval {
+    interval: IntervalType
+}
+
+type UpdatePass {
+    passModel: PassModelType
+}
+
+type UpdatePassType {
+    passType: PassTypeType
+}
+
+type UpdateRole {
+    role: RoleType
+}
+
+type UpdateSection {
+    section: SectionModelType
+}
+
+type UpdateSectionType {
+    sectionType: SectionTypeType
 }
 
 """
@@ -128,4 +259,54 @@ input ClientInput {
     email: String
     firstName: String
     lastName: String
+}
+
+input EntranceInput {
+    date: Date
+    passModelId: Int
+}
+
+input InstructorInput {
+    firstName: String
+    lastName: String
+    password: String
+    roleId: [Int]
+    username: String
+}
+
+input IntervalInput {
+    endTime: Time
+    startTime: Time
+}
+
+input PassInput {
+    clientId: String
+    month: Date
+    passTypeId: Int
+    sectionId: Int
+}
+
+input PassTypeInput {
+    expirationDate: Int
+    maxEntryCount: Int
+    name: String
+    price: Int
+}
+
+input RoleInput {
+    name: String
+}
+
+input SectionInput {
+    instructorId: Int
+    intervalId: Int
+    sectionTypeId: Int
+    weekDay: Int
+}
+
+input SectionTypeInput {
+    maxCount: Int
+    name: String
+    price: Int
+    priceOnceAWeek: Int
 }
