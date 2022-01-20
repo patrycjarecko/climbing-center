@@ -239,7 +239,7 @@ class UpdateInstructor(graphene.Mutation):
 
 class DeleteInstructor(graphene.Mutation):
     class Arguments:
-        id = graphene.ID()
+        id = graphene.String()
 
     instructor = graphene.Field(InstructorType)
 
