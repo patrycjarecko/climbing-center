@@ -171,7 +171,7 @@ class CreateClient(graphene.Mutation):
 class UpdateClient(graphene.Mutation):
     class Arguments:
         input = ClientInput(required=True)
-        id = graphene.ID()
+        id = graphene.String()
 
     client = graphene.Field(ClientType)
 
