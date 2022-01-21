@@ -61,6 +61,7 @@ class Query(graphene.ObjectType):
     passTypes = graphene.List(PassTypeType)
     passes = graphene.List(PassModelType)
     entrances = graphene.List(EntranceType)
+    roles = graphene.List(RoleType)
 
     user = graphene.Field(InstructorType, token=graphene.String(required=True))
 
@@ -90,6 +91,9 @@ class Query(graphene.ObjectType):
 
     def resolve_entrances(root, info, **kwargs):
         return Entrance.objects.all()
+
+    def resolve_roles(root, info, **kwargs):
+        return Role.objects.all()
 
     def resolve_user(root, info, token=None):
         return Instructor.objects.filter(auth_token=token).first() if token is not None else None
