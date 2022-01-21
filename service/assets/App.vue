@@ -41,7 +41,7 @@
           <icon-wunderlist class="mr-2" />
           Section Types
         </router-link>
-        <router-link v-if="userStore.isAdmin" :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+        <router-link v-if="userStore.isAdmin" :to="{ name: 'PassTypes' }" class="p-4 block flex items-center hover:text-[#fa0d]">
           <icon-passport class="mr-2" />
           Pass Types
         </router-link>

@@ -19,7 +19,6 @@
       <table class="w-full shadow">
         <tr class="text-gray-800">
           <td class="bg-gray-200 p-4">Name</td>
-          <td class="bg-gray-200 p-4">Price</td>
           <td class="bg-gray-200 p-4">Max clients</td>
           <td class="bg-gray-200 p-4 text-right">Actions</td>
         </tr>
@@ -30,7 +29,6 @@
           </tr>
           <tr v-for="sectionType of sectionTypes">
             <td class="p-4">{{ sectionType.name }}</td>
-            <td class="p-4">{{ sectionType.price }}</td>
             <td class="p-4">{{ sectionType.maxCount }}</td>
             <td class="p-4 text-right">
               <edit-icon @click="editSectionType(sectionType)" v-if="userStore.isAdmin" class="text-gray-500 hover:text-blue-400 cursor-pointer mr-4" />
@@ -58,9 +56,8 @@
         <h3>Edit section</h3>
       </template>
       <template #body>
-        <it-input v-model="editedSectionType.name" label-top="name" />
-        <div class="grid grid-cols-2 gap-4 pt-4">
-          <it-number-input v-model="editedSectionType.price" label-top="Price" :min="1" :resize-on-write="true" />
+        <div class="grid grid-cols-2 gap-4">
+          <it-input v-model="editedSectionType.name" label-top="name" />
           <it-number-input v-model="editedSectionType.maxCount" label-top="count" :min="1" :resize-on-write="true" />
         </div>
 
@@ -74,9 +71,8 @@
         <h3>Add section type</h3>
       </template>
       <template #body>
-        <it-input v-model="newSectionType.name" label-top="name" />
-        <div class="grid grid-cols-2 gap-4 pt-4">
-          <it-number-input v-if="addMode" v-model="newSectionType.price" label-top="Price" :min="1" :resize-on-write="true" />
+        <div class="grid grid-cols-2 gap-4">
+          <it-input v-model="newSectionType.name" label-top="name" />
           <it-number-input v-if="addMode" v-model="newSectionType.maxCount" label-top="count" :min="1" :resize-on-write="true" />
         </div>
 
@@ -101,8 +97,6 @@ const { result, refetch } = useQuery(gql`
       sectionTypes {
         id
         name maxCount
-        price
-        priceOnceAWeek
       }
     }
 `)
@@ -161,13 +155,11 @@ const editing = ref(false)
 const editMode = ref(false)
 const editedSectionType = reactive({
   id: null,
-  price: 0,
   name: '',
   maxCount: 8,
 })
 const editSectionType = sectionType => {
   editedSectionType.id = sectionType.id
-  editedSectionType.price = sectionType.price
   editedSectionType.maxCount = sectionType.maxCount
   editedSectionType.name = sectionType.name
   editMode.value = true
@@ -179,7 +171,6 @@ const doEdit = async () => {
   await editSectionTypeMutation({
     id: editedSectionType.id,
     sectionType: {
-      price: editedSectionType.price,
       maxCount: editedSectionType.maxCount,
       name: editedSectionType.name,
     }
@@ -193,12 +184,10 @@ const doEdit = async () => {
 const addMode = ref(false)
 const newSectionType = reactive({
   id: null,
-  price: 0,
   name: '',
   maxCount: 8,
 })
 const addNew = async () => {
-  newSectionType.price = 1
   newSectionType.maxCount = 8
   newSectionType.name = ''
 
@@ -212,8 +201,8 @@ const addSectionType = async () => {
 
   await addSectionTypeMutation({
     sectionType: {
-      price: newSectionType.price,
-      priceOnceAWeek: newSectionType.price,
+      price: 0,
+      priceOnceAWeek: 0,
       maxCount: newSectionType.maxCount,
       name: newSectionType.name,
     }
