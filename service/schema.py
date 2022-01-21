@@ -64,6 +64,7 @@ class Query(graphene.ObjectType):
     roles = graphene.List(RoleType)
 
     user = graphene.Field(InstructorType, token=graphene.String(required=True))
+    client = graphene.Field(ClientType, id=graphene.String(required=True))
 
     def resolve_clients(root, info, **kwargs):
         return Client.objects.all()
@@ -97,6 +98,9 @@ class Query(graphene.ObjectType):
 
     def resolve_user(root, info, token=None):
         return Instructor.objects.filter(auth_token=token).first() if token is not None else None
+
+    def resolve_client(root, info, id=None):
+        return Client.objects.filter(card_number=id).first() if id is not None else None
 
 
 

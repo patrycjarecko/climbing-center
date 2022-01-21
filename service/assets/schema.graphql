@@ -159,6 +159,7 @@ type PassTypeType {
 }
 
 type Query {
+    client(id: String!): ClientType
     clients: [ClientType]
     entrances: [EntranceType]
     instructors: [InstructorType]

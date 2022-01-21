@@ -21,17 +21,22 @@
         <tr v-if="!clients.length">
           <td colspan="6" class="p-4 text-center text-gray-400">No results</td>
         </tr>
-        <tr v-for="client of clients">
-          <td class="p-4">{{ client.cardNumber }}</td>
-          <td class="p-4">{{ client.firstName }}</td>
-          <td class="p-4">{{ client.lastName }}</td>
-          <td class="p-4">{{ client.email }}</td>
-          <td class="p-4">{{ client.birthday }}</td>
-          <td class="p-4 text-right">
-            <edit-icon @click="editClient(client)" v-if="userStore.isAdmin || userStore.isReceptionist" class="text-gray-500 hover:text-blue-400 cursor-pointer mr-4" />
-            <trash-icon v-if="userStore.isAdmin" @click="deleteClient(client)" class="text-gray-500 hover:text-red-500 cursor-pointer" />
-          </td>
-        </tr>
+        <template v-for="client of clients" :key="client.cardNumber">
+          <router-link :to="{ name: 'Client', params: { id: client.cardNumber } }" custom #default="{ navigate }">
+            <tr @click="navigate">
+              <td class="p-4">{{ client.cardNumber }}</td>
+              <td class="p-4">{{ client.firstName }}</td>
+              <td class="p-4">{{ client.lastName }}</td>
+              <td class="p-4">{{ client.email }}</td>
+              <td class="p-4">{{ client.birthday }}</td>
+              <td class="p-4 text-right">
+                <view-icon class="text-gray-500 hover:text-blue-400 cursor-pointer mr-4" />
+                <edit-icon @click.stop="editClient(client)" v-if="userStore.isAdmin || userStore.isReceptionist" class="text-gray-500 hover:text-blue-400 cursor-pointer mr-4" />
+                <trash-icon v-if="userStore.isAdmin" @click.stop="deleteClient(client)" class="text-gray-500 hover:text-red-500 cursor-pointer" />
+              </td>
+            </tr>
+          </router-link>
+        </template>
         </tbody>
       </table>
     </div>
@@ -68,6 +73,7 @@
 </template>
 
 <script setup>
+import ViewIcon from '~icons/mdi/eye'
 import EditIcon from '~icons/mdi/pencil'
 import TrashIcon from '~icons/mdi/trash'
 import { useMutation, useQuery } from '@vue/apollo-composable'
