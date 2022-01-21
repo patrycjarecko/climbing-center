@@ -165,6 +165,7 @@ type Query {
     intervals: [IntervalType]
     passTypes: [PassTypeType]
     passes: [PassModelType]
+    roles: [RoleType]
     sectionTypes: [SectionTypeType]
     sections: [SectionModelType]
     user(token: String!): InstructorType

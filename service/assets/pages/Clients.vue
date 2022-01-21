@@ -55,9 +55,9 @@
       </template>
       <template #body>
         <div class="grid grid-cols-2 gap-4">
-          <it-input v-model="editedClient.firstName" />
-          <it-input v-model="editedClient.lastName" />
-          <it-input v-model="editedClient.email" />
+          <it-input v-model="editedClient.firstName" label-top="First name" />
+          <it-input v-model="editedClient.lastName" label-top="Last name" />
+          <it-input v-model="editedClient.email" label-top="Email" />
         </div>
 
         <div class="h-16"></div>
