@@ -33,7 +33,7 @@
           <icon-list-2 class="mr-2" />
           Passes
         </router-link>
-        <router-link v-if="userStore.isAdmin" :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+        <router-link v-if="userStore.isAdmin" :to="{ name: 'Intervals' }" class="p-4 block flex items-center hover:text-[#fa0d]">
           <icon-clock class="mr-2" />
           Intervals
         </router-link>
