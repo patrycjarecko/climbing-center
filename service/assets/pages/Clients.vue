@@ -1,10 +1,14 @@
 <template>
   <div class="container px-8 mx-auto pt-8">
-    <div class="text-xl pb-8">
-      Clients
-      <div class="text-sm text-gray-600">
-        List of clients
+    <div class="flex items-center pb-8">
+      <div class="text-xl">
+        Clients
+        <div class="text-sm text-gray-600">
+          List of clients
+        </div>
       </div>
+      <div class="ml-auto"></div>
+      <it-input v-model="search" label-top="Search" />
     </div>
     <div class="rounded-md overflow-y-hidden shadow">
       <table class="w-full shadow">
@@ -18,10 +22,10 @@
         </tr>
 
         <tbody class="divide-y bg-white">
-        <tr v-if="!clients.length">
+        <tr v-if="!results.length">
           <td colspan="6" class="p-4 text-center text-gray-400">No results</td>
         </tr>
-        <template v-for="client of clients" :key="client.cardNumber">
+        <template v-for="({ item: client }) of results" :key="client.cardNumber">
           <router-link :to="{ name: 'Client', params: { id: client.cardNumber } }" custom #default="{ navigate }">
             <tr @click="navigate">
               <td class="p-4">{{ client.cardNumber }}</td>
@@ -81,6 +85,7 @@ import gql from 'graphql-tag'
 import { computed, reactive, ref } from 'vue'
 import { until } from '@vueuse/core'
 import { useUserStore } from '../store'
+import { useFuse } from '@vueuse/integrations/useFuse'
 
 const { result, refetch } = useQuery(gql`
     query {
@@ -168,4 +173,12 @@ const doEdit = async () => {
   editing.value = false
   editMode.value = false
 }
+
+const search = ref('')
+const { results } = useFuse(search, clients, {
+  matchAllWhenSearchEmpty: true,
+  fuseOptions: {
+    keys: ['cardNumber', 'firstName', 'lastName', 'email']
+  }
+})
 </script>
