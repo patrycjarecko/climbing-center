@@ -17,11 +17,11 @@
           <icon-stats class="mr-2" />
           Dashboard
         </router-link>
-        <router-link :to="{ name: 'Clients' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+        <router-link v-if="userStore.isAdmin || userStore.isReceptionist" :to="{ name: 'Clients' }" class="p-4 block flex items-center hover:text-[#fa0d]">
           <icon-users class="mr-2" />
           Clients
         </router-link>
-        <router-link :to="{ name: 'Users' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+        <router-link v-if="userStore.isAdmin" :to="{ name: 'Users' }" class="p-4 block flex items-center hover:text-[#fa0d]">
           <icon-users class="mr-2" />
           Users
         </router-link>
@@ -33,15 +33,15 @@
           <icon-list-2 class="mr-2" />
           Passes
         </router-link>
-        <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+        <router-link v-if="userStore.isAdmin" :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
           <icon-clock class="mr-2" />
           Intervals
         </router-link>
-        <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+        <router-link v-if="userStore.isAdmin" :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
           <icon-wunderlist class="mr-2" />
           Section Types
         </router-link>
-        <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+        <router-link v-if="userStore.isAdmin" :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
           <icon-passport class="mr-2" />
           Pass Types
         </router-link>

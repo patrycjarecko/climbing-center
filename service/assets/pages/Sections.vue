@@ -37,7 +37,7 @@
             <td class="p-4">{{ section.interval.startTime }} - {{ section.interval.endTime }}</td>
             <td class="p-4">{{ section.passSet.length }} / {{ section.sectionType.maxCount }}</td>
             <td class="p-4 text-right">
-              <edit-icon @click="editSection(section)" class="text-gray-500 hover:text-blue-400 cursor-pointer mr-4" />
+              <edit-icon @click="editSection(section)" v-if="userStore.isAdmin" class="text-gray-500 hover:text-blue-400 cursor-pointer mr-4" />
               <trash-icon @click="deleteSection(section)" v-if="canDelete" class="text-gray-500 hover:text-red-500 cursor-pointer" />
             </td>
           </tr>

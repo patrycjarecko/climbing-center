@@ -70,7 +70,7 @@ import { useUserStore } from '../store'
 
 const { result, refetch } = useQuery(gql`
     query {
-      instructors {
+      users {
         id
         firstName
         lastName
@@ -95,7 +95,7 @@ const { mutate: deleteUserMutation } = useMutation(gql`
 const userStore = useUserStore()
 
 const tags = { 1: 'success', 2: 'warning', 3: 'black' }
-const instructors = computed(() => result.value?.instructors ?? [])
+const instructors = computed(() => result.value?.users ?? [])
 const canDelete = instructor => !instructor.role.map(({ id }) => +id).includes(1) && userStore.isAdmin
 
 const deleting = ref(false)

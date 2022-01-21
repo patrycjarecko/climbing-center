@@ -161,13 +161,14 @@ type PassTypeType {
 type Query {
     clients: [ClientType]
     entrances: [EntranceType]
-    instructor(token: String!): InstructorType
     instructors: [InstructorType]
     intervals: [IntervalType]
     passTypes: [PassTypeType]
     passes: [PassModelType]
     sectionTypes: [SectionTypeType]
     sections: [SectionModelType]
+    user(token: String!): InstructorType
+    users: [InstructorType]
 }
 
 type RoleType {

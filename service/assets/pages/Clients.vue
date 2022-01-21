@@ -28,8 +28,8 @@
           <td class="p-4">{{ client.email }}</td>
           <td class="p-4">{{ client.birthday }}</td>
           <td class="p-4 text-right">
-            <edit-icon class="text-gray-500 hover:text-blue-400 cursor-pointer mr-4" />
-            <trash-icon v-if="canDelete" @click="deleteClient(client)" class="text-gray-500 hover:text-red-500 cursor-pointer" />
+            <edit-icon @click="editClient(client)" v-if="userStore.isAdmin || userStore.isReceptionist" class="text-gray-500 hover:text-blue-400 cursor-pointer mr-4" />
+            <trash-icon v-if="userStore.isAdmin" @click="deleteClient(client)" class="text-gray-500 hover:text-red-500 cursor-pointer" />
           </td>
         </tr>
         </tbody>
@@ -48,6 +48,22 @@
         <it-button type="danger" :loading="deleting" @click="deleteClient">Delete</it-button>
       </template>
     </it-modal>
+
+    <it-modal v-model="editMode">
+      <template #header>
+        <h3>Edit client</h3>
+      </template>
+      <template #body>
+        <div class="grid grid-cols-2 gap-4">
+          <it-input v-model="editedClient.firstName" />
+          <it-input v-model="editedClient.lastName" />
+          <it-input v-model="editedClient.email" />
+        </div>
+
+        <div class="h-16"></div>
+        <it-button @click="doEdit" :loading="editing" block size="big" type="primary">Edit</it-button>
+      </template>
+    </it-modal>
   </div>
 </template>
 
@@ -56,10 +72,9 @@ import EditIcon from '~icons/mdi/pencil'
 import TrashIcon from '~icons/mdi/trash'
 import { useMutation, useQuery } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import { computed, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { until } from '@vueuse/core'
 import { useUserStore } from '../store'
-import { storeToRefs } from 'pinia'
 
 const { result, refetch } = useQuery(gql`
     query {
@@ -69,6 +84,7 @@ const { result, refetch } = useQuery(gql`
         lastName
         birthday
         cardNumber
+        email
       }
     }
 `)
@@ -81,11 +97,19 @@ const { mutate: deleteClientMutation } = useMutation(gql`
         }
     }
 `)
+const { mutate: editClientMutation } = useMutation(gql`
+    mutation editClient($cardNumber: String!, $client: ClientInput!) {
+        updateClient(id: $cardNumber, input: $client) {
+            client {
+                cardNumber
+            }
+        }
+    }
+`)
 
 const clients = computed(() => result.value?.clients ?? [])
 
 const userStore = useUserStore()
-const canDelete = computed(() => userStore.isAdmin)
 const deleting = ref(false)
 const clientToDelete = ref()
 const confirmDelete = ref(false)
@@ -104,5 +128,38 @@ const deleteClient = async (client = null) => {
     clientToDelete.value = null
     confirmDelete.value = false
   }
+}
+
+const editing = ref(false)
+const editMode = ref(false)
+const editedClient = reactive({
+  id: null,
+  interval: null,
+  clientType: null,
+  instructor: null
+})
+const editClient = client => {
+  editedClient.id = client.cardNumber
+  editedClient.firstName = client.firstName
+  editedClient.lastName = client.lastName
+  editedClient.email = client.email
+  editMode.value = true
+}
+
+const doEdit = async () => {
+  editing.value = true
+
+  await editClientMutation({
+    cardNumber: editedClient.id,
+    client: {
+      firstName: editedClient.firstName,
+      lastName: editedClient.lastName,
+      email: editedClient.email
+    }
+  })
+  await refetch()
+
+  editing.value = false
+  editMode.value = false
 }
 </script>
