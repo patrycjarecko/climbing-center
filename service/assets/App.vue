@@ -29,7 +29,7 @@
           <icon-list class="mr-2" />
           Sections
         </router-link>
-        <router-link :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+        <router-link :to="{ name: 'Passes' }" class="p-4 block flex items-center hover:text-[#fa0d]">
           <icon-list-2 class="mr-2" />
           Passes
         </router-link>
