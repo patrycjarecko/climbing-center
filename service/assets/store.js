@@ -8,7 +8,6 @@ import { apolloClient } from './apollo'
 import router from './router'
 import { computed } from 'vue'
 
-const toast = useToast()
 export const useUserStore = defineStore('user', {
   state: () => ({
     token:  null,
@@ -34,7 +33,6 @@ export const useUserStore = defineStore('user', {
 
       await until(isFinished).toBe(true)
       if (error.value) {
-        toast.error('Bledny email i haslo')
         return error.value
       }
 
@@ -42,7 +40,7 @@ export const useUserStore = defineStore('user', {
       const { token } = data.value
       const { result } = useQuery(gql`
           query me($token: String!) {
-              instructor(token: $token) {
+              user(token: $token) {
                   role { id name }
                   firstName lastName
                   id username

@@ -14,7 +14,7 @@
 
       <div class="grid grid-cols-2 gap-4 px-8">
         <it-input v-model="email" placeholder="Email" />
-        <it-input v-model="password" placeholder="Password" />
+        <it-input v-model="password" placeholder="Password" type="password" />
       </div>
 
       <div class="pt-8 px-8">
@@ -37,9 +37,11 @@
 import { ref } from 'vue'
 import { useUserStore } from '../store'
 import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 
 const userStore = useUserStore()
 const router = useRouter()
+const toast = useToast()
 
 const email = ref('')
 const password = ref('')
@@ -53,6 +55,8 @@ const login = async () => {
 
   if (!error) {
     return router.push({ name: 'Dashboard' })
+  } else {
+    toast.error('Bledny email i haslo')
   }
 
 }
