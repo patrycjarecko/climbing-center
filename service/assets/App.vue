@@ -37,7 +37,7 @@
           <icon-clock class="mr-2" />
           Intervals
         </router-link>
-        <router-link v-if="userStore.isAdmin" :to="{ name: 'Register' }" class="p-4 block flex items-center hover:text-[#fa0d]">
+        <router-link v-if="userStore.isAdmin" :to="{ name: 'SectionTypes' }" class="p-4 block flex items-center hover:text-[#fa0d]">
           <icon-wunderlist class="mr-2" />
           Section Types
         </router-link>
