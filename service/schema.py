@@ -53,6 +53,7 @@ class EntranceType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     clients = graphene.List(ClientType)
+    users = graphene.List(InstructorType)
     instructors = graphene.List(InstructorType)
     intervals = graphene.List(IntervalType)
     sectionTypes = graphene.List(SectionTypeType)
@@ -61,13 +62,16 @@ class Query(graphene.ObjectType):
     passes = graphene.List(PassModelType)
     entrances = graphene.List(EntranceType)
 
-    instructor = graphene.Field(InstructorType, token=graphene.String(required=True))
+    user = graphene.Field(InstructorType, token=graphene.String(required=True))
 
     def resolve_clients(root, info, **kwargs):
         return Client.objects.all()
 
-    def resolve_instructors(root, info, **kwargs):
+    def resolve_users(root, info, **kwargs):
         return Instructor.objects.all()
+
+    def resolve_instructors(root, info, **kwargs):
+        return Instructor.objects.filter(role=2)
 
     def resolve_intervals(root, info, **kwargs):
         return Interval.objects.all()
@@ -87,7 +91,7 @@ class Query(graphene.ObjectType):
     def resolve_entrances(root, info, **kwargs):
         return Entrance.objects.all()
 
-    def resolve_instructor(root, info, token=None):
+    def resolve_user(root, info, token=None):
         return Instructor.objects.filter(auth_token=token).first() if token is not None else None
 
 
@@ -232,9 +236,11 @@ class UpdateInstructor(graphene.Mutation):
         instructor.password = input.password if input.password is not None else instructor.password
         instructor.username = input.username if input.username is not None else instructor.username
 
-        roles = [Role.objects.get(pk=index) for index in input.role_id]
+        if input.role_id:
+            roles = [Role.objects.get(pk=index) for index in input.role_id]
+            instructor.role.set(roles)
+
         instructor.save()
-        instructor.role.set(roles) if roles is not None else instructor.role
         return UpdateInstructor(instructor=instructor)
 
 class DeleteInstructor(graphene.Mutation):
@@ -400,14 +406,16 @@ class UpdateSection(graphene.Mutation):
     @classmethod
     def mutate(cls, root, info, input, id):
         section = Section.objects.get(pk=id)
-        interval = Interval.objects.get(pk=input.interval_id)
-        section_type = SectionType.objects.get(pk=input.section_type_id)
-        instructor = Instructor.objects.get(pk=input.instructor_id)
+        if input.interval_id is not None:
+            section.interval = Interval.objects.get(pk=input.interval_id)
+
+        if input.section_type_id is not None:
+            section.section_type = SectionType.objects.get(pk=input.section_type_id)
+
+        if input.instructor_id is not None:
+            section.instructor = Instructor.objects.get(pk=input.instructor_id)
 
         section.week_day = input.week_day if input.week_day is not None else section.week_day
-        section.interval = interval if interval is not None else section.interval
-        section.section_type = section_type if section_type is not None else section.section_type
-        section.instructor = instructor if instructor is not None else section.instructor
         section.save()
         return UpdateSection(section=section)
 
@@ -493,14 +501,16 @@ class UpdatePass(graphene.Mutation):
     @classmethod
     def mutate(cls, root, info, input, id):
         pass_model = Pass.objects.get(pk=id)
-        pass_type = PassType.objects.get(pk=input.pass_type_id)
-        section = Section.objects.get(pk=input.section_id)
-        client = Client.objects.get(pk=input.client_id)
+        if input.pass_type_id is not None:
+            pass_model.pass_type = PassType.objects.get(pk=input.pass_type_id)
+
+        if input.section_id is not None:
+            pass_model.section = Section.objects.get(pk=input.section_id)
+
+        if input.client_id is not None:
+            pass_model.client = Client.objects.get(pk=input.client_id)
 
         pass_model.month = input.month if input.month is not None else pass_model.month
-        pass_model.section = section if section is not None else pass_model.section
-        pass_model.pass_type = pass_type if pass_type is not None else pass_model.pass_type
-        pass_model.client = client if client is not None else pass_model.client
         pass_model.save()
         return UpdatePass(pass_model=pass_model)
 
@@ -542,9 +552,11 @@ class UpdateEntrance(graphene.Mutation):
     @classmethod
     def mutate(cls, root, info, input, id):
         entrance = Entrance.objects.get(pk=id)
-        pass_model = Pass.objects.get(pk=input.pass_model_id)
+
+        if input.pass_model_id is not None:
+            entrance.pass_model = Pass.objects.get(pk=input.pass_model_id)
+
         entrance.date = input.date if input.date is not None else entrance.date
-        entrance.pass_model = pass_model if pass_model is not None else entrance.pass_model
         entrance.save()
         return UpdateEntrance(entrance=entrance)
 
