@@ -21,7 +21,6 @@
           <td class="bg-gray-200 p-4">First name</td>
           <td class="bg-gray-200 p-4">Last name</td>
           <td class="bg-gray-200 p-4">Roles</td>
-          <td class="bg-gray-200 p-4">Last login</td>
           <td class="bg-gray-200 p-4 text-right">Actions</td>
         </tr>
 
@@ -32,16 +31,31 @@
         <tr v-for="instructor of instructors" :key="instructor.id">
             <td class="p-4">{{ instructor.firstName }}</td>
             <td class="p-4">{{ instructor.lastName }}</td>
-            <td class="p-4"></td>
-            <td class="p-4">{{ instructor.lastLogin }}</td>
+            <td class="p-4">
+              <it-tag :type="tags[role.id]" filled v-for="role of instructor.role" :key="role.id" class="mr-2">
+                {{ role.name }}
+              </it-tag>
+            </td>
             <td class="p-4 text-right">
               <edit-icon class="text-gray-500 hover:text-blue-400 cursor-pointer mr-4" />
-              <trash-icon class="text-gray-500 hover:text-red-500 cursor-pointer" />
+              <trash-icon @click="deleteUser(instructor)" :class="{ '!opacity-0 !pointer-events-none': !canDelete(instructor) }" class="text-gray-500 hover:text-red-500 cursor-pointer" />
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <it-modal v-model="confirmDelete">
+      <template #header>
+        <h3>Delete user</h3>
+      </template>
+      <template #body>
+        User will be deleted permanently, please confirm
+      </template>
+      <template #actions>
+        <it-button @click="confirmDelete = null">Cancel</it-button>
+        <it-button type="danger" :loading="deleting" @click="deleteUser">Delete</it-button>
+      </template>
+    </it-modal>
   </div>
 </template>
 
@@ -49,20 +63,58 @@
 import AddIcon from '~icons/mdi/plus'
 import EditIcon from '~icons/mdi/pencil'
 import TrashIcon from '~icons/mdi/trash'
-import { useQuery } from '@vue/apollo-composable'
+import { useMutation, useQuery } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useUserStore } from '../store'
 
-const { result } = useQuery(gql`
+const { result, refetch } = useQuery(gql`
     query {
       instructors {
         id
         firstName
         lastName
         lastLogin
+        role {
+          id
+          name
+        }
       }
     }
 `)
+const { mutate: deleteUserMutation } = useMutation(gql`
+    mutation deleteUser($id: ID!) {
+        deleteInstructor(id: $id) {
+          instructor {
+            id
+          }
+        }
+    }
+`)
 
+const userStore = useUserStore()
+
+const tags = { 1: 'success', 2: 'warning', 3: 'black' }
 const instructors = computed(() => result.value?.instructors ?? [])
+const canDelete = instructor => !instructor.role.map(({ id }) => +id).includes(1) && userStore.isAdmin
+
+const deleting = ref(false)
+const userToDelete = ref()
+const confirmDelete = ref(false)
+const deleteUser = async (user = null) => {
+  if (user && !(user instanceof MouseEvent)) {
+    userToDelete.value = user
+    confirmDelete.value = true
+    return
+  }
+
+  if (userToDelete.value) {
+    deleting.value = true
+    await deleteUserMutation({ id: userToDelete.value.id })
+    await refetch()
+    deleting.value = false
+    userToDelete.value = null
+    confirmDelete.value = false
+  }
+}
 </script>

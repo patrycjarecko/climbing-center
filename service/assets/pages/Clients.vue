@@ -29,7 +29,7 @@
           <td class="p-4">{{ client.birthday }}</td>
           <td class="p-4 text-right">
             <edit-icon class="text-gray-500 hover:text-blue-400 cursor-pointer mr-4" />
-            <trash-icon @click="deleteClient(client)" class="text-gray-500 hover:text-red-500 cursor-pointer" />
+            <trash-icon v-if="canDelete" @click="deleteClient(client)" class="text-gray-500 hover:text-red-500 cursor-pointer" />
           </td>
         </tr>
         </tbody>
@@ -45,7 +45,7 @@
       </template>
       <template #actions>
         <it-button @click="confirmDelete = null">Cancel</it-button>
-        <it-button type="danger" :loading="deleting" @click="deleteClient" >Delete</it-button>
+        <it-button type="danger" :loading="deleting" @click="deleteClient">Delete</it-button>
       </template>
     </it-modal>
   </div>
@@ -58,6 +58,8 @@ import { useMutation, useQuery } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import { computed, ref } from 'vue'
 import { until } from '@vueuse/core'
+import { useUserStore } from '../store'
+import { storeToRefs } from 'pinia'
 
 const { result, refetch } = useQuery(gql`
     query {
@@ -82,6 +84,8 @@ const { mutate: deleteClientMutation } = useMutation(gql`
 
 const clients = computed(() => result.value?.clients ?? [])
 
+const userStore = useUserStore()
+const canDelete = computed(() => userStore.isAdmin)
 const deleting = ref(false)
 const clientToDelete = ref()
 const confirmDelete = ref(false)

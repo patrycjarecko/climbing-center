@@ -6,15 +6,24 @@ import { provideApolloClient, useQuery, useResult } from '@vue/apollo-composable
 import gql from 'graphql-tag'
 import { apolloClient } from './apollo'
 import router from './router'
+import { computed } from 'vue'
 
 const toast = useToast()
-export const useUserStore = defineStore('counter', {
+export const useUserStore = defineStore('user', {
   state: () => ({
     token:  null,
     me:  null
   }),
   getters: {
-    isAuthenticated: state => state.me !== null
+    isAuthenticated: state => state.me !== null,
+    roleIds (state) {
+      return this.isAuthenticated
+        ? state.me.role.map(({ id }) => +id)
+        : []
+    },
+    isAdmin () { return this.roleIds.includes(1) },
+    isInstructor () { return this.roleIds.includes(2) },
+    isReceptionist () { return this.roleIds.includes(3) },
   },
   actions: {
     async login (username, password) {
@@ -36,7 +45,7 @@ export const useUserStore = defineStore('counter', {
               instructor(token: $token) {
                   role { id name }
                   firstName lastName
-                  username
+                  id username
               }
           }
       `, { token })
